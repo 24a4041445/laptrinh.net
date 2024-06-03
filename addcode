@@ -1,191 +1,399 @@
 add code vô đây này
-Form viết bài:
------------------vietbai------------------
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SqlClient;
-using qlvietbai1.Class;
 
-namespace qlvietbai1
+CODE NHÂN VIÊN 
+namespace quanly_HDQC.Forms
 {
-    public partial class DMvietbai : Form
+    public partial class Nhanvien : Form
     {
-        DataTable tbl_vietbai;
-        public DMvietbai()
+        public Nhanvien()
         {
             InitializeComponent();
         }
 
-        private void vietbai_Load(object sender, EventArgs e)
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            txtMabaiviet.Enabled = false;
-            btnLuu.Enabled = false;
-            btnBoqua.Enabled = false;
-            Load_datagrid();
 
         }
-        private void Load_datagrid()
+
+        private void Nhanvien_Load(object sender, EventArgs e)
+        {
+            txtMaNV.Enabled = false;
+            bttluu.Enabled = false;
+            bttboqua.Enabled = false;
+            load_datagrid();
+        }
+        DataTable tbl_nhanvien;
+
+        private void load_datagrid()
         {
             string sql;
-            sql = "select * from tbl_vietbai";
-            tbl_vietbai = Function.GetDataToTable(sql);
-            dgrid_vietbai.DataSource = tbl_vietbai;
-            dgrid_vietbai.Columns[0].HeaderText = "Mã bài viết";
-            dgrid_vietbai.Columns[1].HeaderText = "Tên bài viết";
-            dgrid_vietbai.Columns[2].HeaderText = "Mã dịch vụ";
-            dgrid_vietbai.Columns[3].HeaderText = "Mã thể loại";
-            dgrid_vietbai.Columns[4].HeaderText = "Ngày viết";
-            dgrid_vietbai.Columns[5].HeaderText = "Số từ";
-            dgrid_vietbai.Columns[0].Width = 300;
-            dgrid_vietbai.Columns[1].Width = 300;
-            dgrid_vietbai.Columns[2].Width = 300;
-            dgrid_vietbai.Columns[3].Width = 300;
-            dgrid_vietbai.Columns[4].Width = 300;
-            dgrid_vietbai.Columns[5].Width = 300;
-            dgrid_vietbai.AllowUserToAddRows = false;
-            dgrid_vietbai.EditMode = DataGridViewEditMode.EditProgrammatically;
+            sql = "SELECT Manhanvien,Tennhanvien,Maquangcao,Maphong,Machucvu,Machuyenmon,Diachi,Ngaysinh,Gioitinh,Sodienthoai,Email FROM tbl_nhanvien";
+            tbl_nhanvien = Function.Getdatatotable(sql);
+            dgridNhanvien.DataSource = tbl_nhanvien;
+            dgridNhanvien.Columns[0].HeaderText = "Mã nhân viên";
+            dgridNhanvien.Columns[1].HeaderText = "Tên nhân viên";
+            dgridNhanvien.Columns[2].HeaderText = "Mã quảng cáo";
+            dgridNhanvien.Columns[3].HeaderText = "Mã phòng ban";
+            dgridNhanvien.Columns[4].HeaderText = "Mã chức vụ";
+            dgridNhanvien.Columns[5].HeaderText = "Mã chuyên môn";
+            dgridNhanvien.Columns[6].HeaderText = "Địa chỉ";
+            dgridNhanvien.Columns[7].HeaderText = "Ngày sinh";
+            dgridNhanvien.Columns[8].HeaderText = "Giới tính";
+            dgridNhanvien.Columns[9].HeaderText = "Số điện thoại";
+            dgridNhanvien.Columns[10].HeaderText = "Email";
+            dgridNhanvien.Columns[0].Width = 100;
+            dgridNhanvien.Columns[1].Width = 150;
+            dgridNhanvien.Columns[2].Width = 100;
+            dgridNhanvien.Columns[3].Width = 150;
+            dgridNhanvien.Columns[4].Width = 100;
+            dgridNhanvien.Columns[5].Width = 100;
+            dgridNhanvien.Columns[6].Width = 100;
+            dgridNhanvien.Columns[7].Width = 100;
+            dgridNhanvien.Columns[8].Width = 100;
+            dgridNhanvien.Columns[9].Width = 100;
+            dgridNhanvien.Columns[10].Width = 100;
+            dgridNhanvien.AllowUserToAddRows = false;
+            dgridNhanvien.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
 
-        private void dgrid_vietbai_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgridNhanvien_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (btnThem.Enabled == false)
+
+        }
+
+        private void dgridNhanvien_Click(object sender, EventArgs e)
+        {
+            if (bttThem.Enabled == false)
             {
                 MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtMabaiviet.Focus();
+                txtMaNV.Focus();
                 return;
             }
-            if (tbl_vietbai.Rows.Count == 0)
+            if (tbl_nhanvien.Rows.Count == 0)
             {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không có dữ liệu!", "Thông báo", MessageBoxButtons.OK,  MessageBoxIcon.Information);
                 return;
             }
-            txtMabaiviet.Text = dgrid_vietbai.CurrentRow.Cells["Mabaiviet"].Value.ToString();
-            txtTenbaiviet.Text = dgrid_vietbai.CurrentRow.Cells["Tenbaiviet"].Value.ToString();
-            txtMadichvu.Text = dgrid_vietbai.CurrentRow.Cells["Madichvu"].Value.ToString();
-            txtMatheloai.Text = dgrid_vietbai.CurrentRow.Cells["Matheloai"].Value.ToString();
-            mtxtNgayviet.Text = dgrid_vietbai.CurrentRow.Cells["Ngayviet"].Value.ToString();
-            txtSotu.Text = dgrid_vietbai.CurrentRow.Cells["Sotu"].Value.ToString();
-
-            btnSua.Enabled = true;
-            btnXoa.Enabled = true;
-            btnBoqua.Enabled = true;
-
+            txtMaNV.Text = dgridNhanvien.CurrentRow.Cells["Manhanvien"].Value.ToString();
+            txttennhanvien.Text = dgridNhanvien.CurrentRow.Cells["Tennhanvien"].Value.ToString();
+            txtmaquangcao.Text = dgridNhanvien.CurrentRow.Cells["Maquangcao"].Value.ToString();
+            txtmaphongban.Text = dgridNhanvien.CurrentRow.Cells["Maphong"].Value.ToString();
+            txtchucvu.Text = dgridNhanvien.CurrentRow.Cells["Machucvu"].Value.ToString();
+            txtmachuyenmon.Text = dgridNhanvien.CurrentRow.Cells["Machuyenmon"].Value.ToString();
+            if (dgridNhanvien.CurrentRow.Cells["Gioitinh"].Value.ToString() == "Nam")
+                checkgioitinh.Checked = true;
+            else
+                checkgioitinh.Checked = false;            
+            txtdiachi.Text = dgridNhanvien.CurrentRow.Cells["Diachi"].Value.ToString();            
+            mskdienthoai.Text = dgridNhanvien.CurrentRow.Cells["Sodienthoai"].Value.ToString();
+            mskngaysinh.Text = dgridNhanvien.CurrentRow.Cells["Ngaysinh"].Value.ToString();
+            txtemail.Text = dgridNhanvien.CurrentRow.Cells["Email"].Value.ToString();
+            bttsua.Enabled = true;
+            bttxoa.Enabled = true;
+            bttboqua.Enabled = true;
         }
 
-        private void btnThem_Click(object sender, EventArgs e)
+        private void bttThem_Click(object sender, EventArgs e)
         {
-
-            btnSua.Enabled = false;
-            btnXoa.Enabled = false;
-            btnBoqua.Enabled = true;
-            btnLuu.Enabled = true;
-            btnThem.Enabled = false;
+            bttsua.Enabled = false;
+            bttxoa.Enabled = false;
+            bttboqua.Enabled = true;
+            bttluu.Enabled = true;
+            bttThem.Enabled = false;
             ResetValues();
-
+            txtMaNV.Enabled = true;
+            txtMaNV.Focus();
         }
         private void ResetValues()
         {
-            txtMabaiviet.Text = "";
-            txtTenbaiviet.Text = "";
-            txtMadichvu.Text = "";
-            txtMatheloai.Text = "";
-            mtxtNgayviet.Text = "";
-            txtSotu.Text = "";
+            txtMaNV.Text = "";
+            txttennhanvien.Text = "";
+            txtmaquangcao.Text = "";
+            txtmaphongban.Text = "";
+            txtchucvu.Text = "";
+            txtmachuyenmon.Text = "";
+            txtemail.Text = "";
+            checkgioitinh.Checked = false;
+            txtdiachi.Text = "";
+            mskngaysinh.Text = "";
+            mskdienthoai.Text = "";
         }
 
-        private void btnLuu_Click(object sender, EventArgs e)
+        private void bttluu_Click(object sender, EventArgs e)
         {
-            string sql;
-            if (txtMabaiviet.Text.Trim().Length == 0)
+            string sql, gt;
+            if (txtMaNV.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập mã bài viết", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMabaiviet.Focus();
+                MessageBox.Show("Bạn phải nhập mã nhân viên", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaNV.Focus();
                 return;
             }
-            if (txtTenbaiviet.Text.Trim().Length == 0)
+            if (txttennhanvien.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập tên bài viết", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenbaiviet.Focus();
+                MessageBox.Show("Bạn phải nhập tên nhân viên", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txttennhanvien.Focus();
                 return;
             }
-            if (txtMadichvu.Text.Trim().Length == 0)
+            if (txtmaquangcao.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập mã dịch vụ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMadichvu.Focus();
+                MessageBox.Show("Bạn phải nhập mã quảng cáo", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmaquangcao.Focus();
                 return;
             }
-            if (txtMatheloai.Text.Trim().Length == 0)
+            if (txtmaphongban.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập mã thể loại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMatheloai.Focus();
+                MessageBox.Show("Bạn phải nhập mã phòng ban", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmaphongban.Focus();
                 return;
             }
-            sql = "SELECT Mabaiviet FROM tbl_vietbai WHERE Mabaiviet=N'" + txtMabaiviet.Text.Trim() + "'";
+            if (txtchucvu.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã chức vụ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtchucvu.Focus();
+                return;
+            }
+            if (txtmachuyenmon.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã chuyên môn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmachuyenmon.Focus();
+                return;
+            }
+            if (txtdiachi.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập địa chỉ", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                txtdiachi.Focus();
+                return;
+            }
+            if (txtemail.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập email", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtemail.Focus();
+                return;
+            }
+            if (mskdienthoai.Text.Trim() == "(   )    -")
+            {
+                MessageBox.Show("Bạn phải nhập điện thoại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskdienthoai.Focus();
+                return;
+            }
+            if (mskngaysinh.Text == "  /  /")
+            {
+                MessageBox.Show("Bạn phải nhập ngày sinh", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskngaysinh.Focus();
+                return;
+            }
+            if (!Function.IsDate(mskngaysinh.Text))
+            {
+                MessageBox.Show("Bạn phải nhập lại ngày sinh", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskngaysinh.Text = "";
+                mskngaysinh.Focus();
+                return;
+            }
+            if (checkgioitinh.Checked == true)
+                gt = "Nam";
+            else
+                gt = "Nữ";
+            sql = "SELECT Manhanvien FROM tbl_nhanvien WHERE Manhanvien=N'" +txtMaNV.Text.Trim() + "'";
             if (Function.CheckKey(sql))
             {
-                MessageBox.Show("Mã bài viết này đã có, bạn phải nhập mã khác", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMabaiviet.Focus();
-                txtMabaiviet.Text = "";
+                MessageBox.Show("Mã nhân viên này đã có, bạn phải nhập mã khác", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaNV.Focus();
+                txtMaNV.Text = "";
                 return;
             }
-            sql = "INSERT INTO tbl_vietbai(Mabaiviet,Tenbaiviet,Madichvu,Matheloai,ngayviet, sotu) VALUES (N'" + txtMabaiviet.Text.Trim() + "',N'" + txtTenbaiviet.Text.Trim() + "',N'" + txtMadichvu.Text.Trim() + "','" + txtMatheloai.Text + "',N'" + txtTenbaiviet.Text.Trim() + "',N'" + mtxtNgayviet.Text.Trim() + "',N'" + txtSotu.Text.Trim() + "')";
+            sql = "INSERT INTO tbl_nhanvien(Manhanvien,Tennhanvien,Maquangcao,Maphong,Machucvu,Machuyenmon,Diachi,Ngaysinh,Gioitinh,Sodienthoai,Email) VALUES(N'" + txtMaNV.Text.Trim() + "', N'" + txttennhanvien.Text.Trim() + "', N'" + gt + "', N'" + txtmaquangcao.Text.Trim() + "', N'" + txtmaphongban.Text.Trim() + "',N'" + txtchucvu.Text.Trim() + "',N'" + txtmachuyenmon.Text.Trim() + "',N'" + txtemail.Text.Trim() + "',N'" + txtdiachi.Text.Trim() + "', '" + mskdienthoai.Text + "', '" + Function.ConvertDateTime(mskngaysinh.Text) + "')";
             Function.RunSql(sql);
-            Load_datagrid();
+            load_datagrid();
             ResetValues();
-            btnXoa.Enabled = true;
-            btnThem.Enabled = true;
-            btnSua.Enabled = true;
-            btnBoqua.Enabled = false;
-            btnLuu.Enabled = false;
-            txtMabaiviet.Enabled = false;
-
+            bttxoa.Enabled = true;
+            bttThem.Enabled = true;
+            bttsua.Enabled = true;
+            bttboqua.Enabled = false;
+            bttluu.Enabled = false;
+            txtMaNV.Enabled = false;
         }
 
-        private void btnXoa_Click(object sender, EventArgs e)
+        private void bttsua_Click(object sender, EventArgs e)
+        {
+            string sql, gt;
+            if (tbl_nhanvien.Rows.Count == 0)
+            {
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                return;
+            }
+            if (txtMaNV.Text == "")
+            {
+                MessageBox.Show("Bạn chưa chọn bản ghi nào", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (txttennhanvien.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập tên nhân viên", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txttennhanvien.Focus();
+                return;
+            }
+            if (txtmaquangcao.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã quảng cáo", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmaquangcao.Focus();
+                return;
+            }
+            if (txtmaphongban.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã phòng ban", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmaphongban.Focus();
+                return;
+            }
+            if (txtchucvu.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã chức vụ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtchucvu.Focus();
+                return;
+            }
+            if (txtmachuyenmon.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mã chuyên môn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtmachuyenmon.Focus();
+                return;
+            }
+            if (txtemail.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập email", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtemail.Focus();
+                return;
+            }
+            if (txtdiachi.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập địa chỉ", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                txtdiachi.Focus();
+                return;
+            }
+            if (mskdienthoai.Text == "(   )     -")
+            {
+                MessageBox.Show("Bạn phải nhập điện thoại", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskdienthoai.Focus();
+                return;
+            }
+            if (mskngaysinh.Text == "  /  /")
+            {
+                MessageBox.Show("Bạn phải nhập ngày sinh", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskngaysinh.Focus();
+                return;
+            }
+            if (!Function.IsDate(mskngaysinh.Text))
+            {
+                MessageBox.Show("Bạn phải nhập lại ngày sinh", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mskngaysinh.Text = "";
+                mskngaysinh.Focus();
+                return;
+            }
+            if (checkgioitinh.Checked == true)
+                gt = "Nam";
+            else
+                gt = "Nữ";
+            sql = "UPDATE tbl_nhanvien SET  Tennhanvien=N'" +txttennhanvien.Text.Trim().ToString() +
+                    "',Maquangcao=N'" + txtmaquangcao.Text.Trim().ToString() +
+                    "',Maphong=N'" + txtmaphongban.Text.Trim().ToString() +
+                    "',Machucvu=N'" + txtchucvu.Text.Trim().ToString() +
+                    "',Machuyenmon=N'" + txtmachuyenmon.Text.Trim().ToString() +
+                    "',Email=N'" + txtemail.Text.Trim().ToString() +
+                    "',Diachi=N'" + txtdiachi.Text.Trim().ToString() +
+                    "',Sodienthoai='" + mskdienthoai.Text.ToString() + 
+                    "',Gioitinh=N'" + gt +
+                    "',Ngaysinh='" + Function.ConvertDateTime(mskngaysinh.Text) +
+                    "' WHERE Manhanvien=N'" + txtMaNV.Text + "'";
+            Function.RunSql(sql);
+            load_datagrid();
+            ResetValues();
+            bttboqua.Enabled = false;
+        }
+
+        private void bttxoa_Click(object sender, EventArgs e)
         {
             string sql;
-            if (tbl_vietbai.Rows.Count == 0)
+            if (tbl_nhanvien.Rows.Count == 0)
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 return;
             }
-            if (txtMabaiviet.Text == "")
+            if (txtMaNV.Text == "")
             {
-                MessageBox.Show("Bạn chưa chọn bản ghi nào", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Bạn chưa chọn bản ghi nào", "Thông báo",MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (MessageBox.Show("Bạn có muốn xóa không?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("Bạn có muốn xóa không?", "Thông báo",MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                sql = "DELETE tblKhach WHERE Makhach=N'" + txtMabaiviet.Text + "'";
-                Function.RunSqlDel(sql);
-                Load_datagrid();
+                sql = "DELETE tbl_nhanvien WHERE Manhanvien=N'" + txtMaNV.Text + "'";
+                Function.RunSql(sql);
+                load_datagrid();
                 ResetValues();
             }
-
         }
 
-        private void btnBoqua_Click(object sender, EventArgs e)
-        {
-            ResetValues();
-            btnBoqua.Enabled = false;
-            btnThem.Enabled = true;
-            btnXoa.Enabled = true;
-            btnSua.Enabled = true;
-            btnLuu.Enabled = false;
-            txtMabaiviet.Enabled = false;
-
-        }
-
-        private void btnThoat_Click(object sender, EventArgs e)
+        private void bttdong_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void bttboqua_Click(object sender, EventArgs e)
+        {
+            ResetValues();
+            bttboqua.Enabled = false;
+            bttThem.Enabled = true;
+            bttxoa.Enabled = true;
+            bttsua.Enabled = true;
+            bttluu.Enabled = false;
+            txtMaNV.Enabled = false;
+        }
+        private void txtMaNV_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txttennhanvien_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtmaquangcao_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtmaphongban_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtchucvu_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtmachuyenmon_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtemail_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void txtdiachi_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void mskdienthoai_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
+        }
+        private void mskngaysinh_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendKeys.Send("{TAB}");
         }
     }
 }
